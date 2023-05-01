@@ -1,0 +1,16 @@
+---
+title: "Final-Project"
+author: "Ryan Corydon and Emma Podlich"
+date: "2023-05-01"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+data = read.csv("finalHW.csv")
+View(data)
+```
+
