@@ -12,5 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 data = read.csv("finalHW.csv")
 View(data)
+
+str(data)
 ```
+
+The data set that we are looking at is the "Superstore Sales Dataset" from Kaggle. This data set contains information about retail sales of a global superstore over 4 years (2011-2014). We plan to analyze this data set in order to find how sales of certain items compare in various countries. This will be useful for finding what the superstore focus their marketing on in each region or "market" based on the results that we find. Since the data set is from Kaggle, the data is fairly clean and easy to read/understand. We plan to further clean the data by creating subdatasets for each "market" to make creating the plots easier. We will also change some of the character variables to factor variables for ease of data processing. 
 
