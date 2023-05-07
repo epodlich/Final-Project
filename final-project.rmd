@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 ```
 
 ```{r}
@@ -25,5 +26,13 @@ data$order_date <- as.Date(data$order_date)
 data$Ship_days <- as.numeric(difftime(data$ship_date, data$order_date, units = "days"))
 ```
 
+We will use this new variable "Ship_Days" to analyze trends between cost and region to see if they are correlated between the given ship day.
 
+
+```{r}
+dataNew <- data[complete.cases(data),]
+str(dataNew)
+View(dataNew)
+```
+An issue with this is that there are some pieces of data that are missing values. We will clean the data removing all of the missing values so we have no issues within the data. This new dataset is much smaller than the original as any row with a null value has been cleaned.
 
