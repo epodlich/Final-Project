@@ -83,5 +83,24 @@ We expected that profits would increase over time for the most part as the years
 
 ### Ship Days by Order Priority 
 
+```{r}
+
+```
+
+
 
 ### Sales by Category
+
+There are three categories of items that can be bought, office supplies, technology, and furniture. We want to analyze the amount of profits per each category and segment to see where the company makes the most money.
+```{r}
+
+totalSales = dataNew %>% group_by(category,segment) %>% summarise(total_profit = sum(profit))
+totalSales
+ggplot(totalSales, aes(x = category, y = total_profit, fill = segment)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Total Profit by Segment and Category",
+       x = "Category",
+       y = "Total Profit",
+       fill = "Segment")
+```
+It can be seen that orders from this company are mainly from consumers as they are purchasing the most furniture, office supplies, and technology. While Home offices are spent the least on every category as well. Most of these orders are spent on technology with a maximum profit of 96,189.28 dollars. As well the least spent was home office furniture at 16,599.82 dollars. 
