@@ -63,3 +63,18 @@ shippingsummary %>% mutate(region = reorder(factor(region), shipping_cost, mean,
 ```
 
 We expected to see the highest shipping costs for the most rural regions such as Africa and Asia. The bar plot of average shipping cost by region above indicates that we were somewhat correct with our prediction. The highest average shipping costs are in regions in Asia, however, Africa's average shipping costs are fairly low which was surprising. This company could work on reducing shipping costs in Asia to help expand their market in Asia. They could also advertise low shipping costs in Afria to help appeal towards the market in Africa.
+
+
+### Profit by Year and Region
+
+```{r}
+dataNew$profit <- as.numeric(dataNew$profit)
+
+profits = dataNew %>% group_by(year, region) %>% summarise(total_profit = sum(profit))
+profits
+
+profits %>% ggplot(aes(x = year, y = total_profit, colour = region)) + geom_line() + facet_wrap(~region) + ggtitle("Total Profit by Year and Region") + labs(x = "Year", y = "Total Profit (dollars)")
+```
+To clean the data for creating a profit chart by year and region, the first step was making profit a numeric variable from its previous character type. Then, a new dataframe was created that indicated the sum of profits in each region and year that was plotted into a line plot. 
+
+We expected that profits would increase over time for the most part as the years increased. We also believed that the profits would be highest in the western and central regions. According to the line plot, our predictions were not completely correct. In most regions, total profits increased until 2014 when there was a little bit of a decrease. However, profits were the highest in all four years in the central region. If the company would like to expand their marker, then they should focus advertising in the regions with less profits such as Oceania, Southern Asia, and Canada where their profits are low. If the company would like to focus on increasing profits in the best profitable regions, then they should focus advertising in the regions with higher profits such as Central, North, and Northern Asia.
