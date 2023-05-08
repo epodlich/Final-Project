@@ -7,7 +7,9 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 library(dplyr)
+library(ggplot2)
 ```
 
 ```{r}
@@ -36,3 +38,28 @@ View(dataNew)
 ```
 An issue with this is that there are some pieces of data that are missing values. We will clean the data removing all of the missing values so we have no issues within the data. This new dataset is much smaller than the original as any row with a null value has been cleaned.
 
+
+### Shipping Cost By Region
+
+```{r}
+dataNew %>% ggplot(aes(shipping_cost)) + geom_boxplot(aes(colour = region)) + facet_wrap(~region) + ggtitle("Shipping Cost By Region Boxplot") + labs(x = "Shipping Cost (dollars)")
+```
+
+We expected to see the highest shipping costs for the most rural regions such as Africa and Asia. The box plot of shipping cost by region above indicates that we were somewhat correct with our prediction. There are the most outliers of high shipping costs in the Central, South, and West regions. However, it is difficult to see the exact means of shipping cost by region as there are lots of outliers in each region. Therefore, to see more exact comparisons, we did further data processing seen below.
+
+```{r}
+shipping = dataNew %>% select(region, shipping_cost)
+shipping$region <- as.factor(shipping$region)
+shippingsummary = shipping %>% group_by(region) %>%
+  summarise(shipping_cost = mean(shipping_cost))
+
+shippingsummary
+```
+
+In order to get the average shipping cost by region, we did a couple steps of data processing. We selected the region and shipping cost variables into a new dataframe. Then, made the region as a factor variable and grouped by region to summarise the mean shipping cost by region.
+
+```{r}
+shippingsummary %>% mutate(region = reorder(factor(region), shipping_cost, mean, na.rm=TRUE)) %>% ggplot(aes(x = region, y = shipping_cost)) + geom_bar(stat = 'identity') + ggtitle("Average Shipping Cost By Region Bar Chart") + labs(y = "Average Shipping Cost (dollars)", x = "Region")
+```
+
+We expected to see the highest shipping costs for the most rural regions such as Africa and Asia. The bar plot of average shipping cost by region above indicates that we were somewhat correct with our prediction. The highest average shipping costs are in regions in Asia, however, Africa's average shipping costs are fairly low which was surprising. This company could work on reducing shipping costs in Asia to help expand their market in Asia. They could also advertise low shipping costs in Afria to help appeal towards the market in Africa.
