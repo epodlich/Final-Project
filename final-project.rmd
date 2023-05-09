@@ -83,10 +83,14 @@ We expected that profits would increase over time for the most part as the years
 
 ### Ship Days by Order Priority 
 
+Another trend we want to analyze is if the amount of shipping days is correlated to order priority. We believe that order's with the priority critical, should have less shipping days for most. 
+
 ```{r}
+ggplot(dataNew, aes(x = Ship_days, fill = factor(order_priority))) +
+  geom_histogram(alpha = 0.5, position = "identity", bins = 5)   + ggtitle("Histogram of Shipping days by Priority") + labs(x = "Count", y = "Count")
 
 ```
-
+As we can see through the histogram only critical and high priority orders take less shipping days than low and medium priority orders.
 
 
 ### Sales by Category
