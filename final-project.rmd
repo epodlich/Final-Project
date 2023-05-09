@@ -90,7 +90,7 @@ ggplot(dataNew, aes(x = Ship_days, fill = factor(order_priority))) +
   geom_histogram(alpha = 0.5, position = "identity", bins = 5)   + ggtitle("Histogram of Shipping days by Priority") + labs(x = "Count", y = "Count")
 
 ```
-As we can see through the histogram only critical and high priority orders take less shipping days than low and medium priority orders.
+As we can see through the histogram only critical and high priority orders take less shipping days than low and medium priority orders. This makes sense as more important orders should be shipped faster than others. There are some low priority orders with 0 days shipping but that is because there is same day shipping for all orders. 
 
 
 ### Sales by Category
@@ -102,9 +102,25 @@ totalSales = dataNew %>% group_by(category,segment) %>% summarise(total_profit =
 totalSales
 ggplot(totalSales, aes(x = category, y = total_profit, fill = segment)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Total Profit by Segment and Category",
-       x = "Category",
-       y = "Total Profit",
+  labs(title = "Total Profit by Segment and Category",x = "Category",y = "Total Profit",
        fill = "Segment")
 ```
 It can be seen that orders from this company are mainly from consumers as they are purchasing the most furniture, office supplies, and technology. While Home offices are spent the least on every category as well. Most of these orders are spent on technology with a maximum profit of 96,189.28 dollars. As well the least spent was home office furniture at 16,599.82 dollars. 
+
+
+### Sales versus discount
+
+Another interesting topic we would like to discover is how each region does in sales. First we are gonna find the average of all sales per region and then chart it in a scatter plot. This will show us which regions are lacking and which regions are thriving in the sales department.
+
+```{r}
+dataNew$sales <- as.numeric(dataNew$sales)
+avg_sales_by_region = dataNew %>% group_by(region) %>%
+  summarize(Avg_Sales = mean(sales, na.rm = TRUE))
+
+# View the resulting data frame
+avg_sales_by_region
+
+
+avg_sales_by_region %>% ggplot(aes(x = region, y = Avg_Sales, color = region)) + geom_point() +labs(x = "Region", y = "Sales") + ggtitle("Region vs. Sales Scatterplot")
+```
+Looking at the scatter plot Africa and EMEA are lacking in sales compared to the rest of the group. North America has the most sales in orders and then it is Central Asia. No other region has an average sales of over 200. This makes sense as these are the two most populated regions around the world,  the other regions are large but have a much less population causing less orders.
