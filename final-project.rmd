@@ -36,6 +36,7 @@ dataNew <- data[complete.cases(data),]
 str(dataNew)
 View(dataNew)
 ```
+
 An issue with this is that there are some pieces of data that are missing values. We will clean the data removing all of the missing values so we have no issues within the data. This new dataset is much smaller than the original as any row with a null value has been cleaned.
 
 
@@ -77,7 +78,7 @@ profits %>% ggplot(aes(x = year, y = total_profit, colour = region)) + geom_line
 ```
 To clean the data for creating a profit chart by year and region, the first step was making profit a numeric variable from its previous character type. Then, a new dataframe was created that indicated the sum of profits in each region and year that was plotted into a line plot. 
 
-We expected that profits would increase over time for the most part as the years increased. We also believed that the profits would be highest in the western and central regions. According to the line plot, our predictions were not completely correct. In most regions, total profits increased until 2014 when there was a little bit of a decrease. However, profits were the highest in all four years in the central region. If the company would like to expand their marker, then they should focus advertising in the regions with less profits such as Oceania, Southern Asia, and Canada where their profits are low. If the company would like to focus on increasing profits in the best profitable regions, then they should focus advertising in the regions with higher profits such as Central, North, and Northern Asia.
+We expected that profits would increase over time for the most part as the years increased. We also believed that the profits would be highest in the western and central regions. According to the line plot, our predictions were not completely correct. In most regions, total profits increased until 2014 when there was a little bit of a decrease. However, profits were the highest in all four years in the central region. If the company would like to expand their marketing, then they should focus advertising in the regions with less profits such as Oceania, Southern Asia, and Canada where their profits are low. If the company would like to focus on increasing profits in the best profitable regions, then they should focus advertising in the regions with higher profits such as Central, North, and Northern Asia.
 
 
 
@@ -90,12 +91,14 @@ ggplot(dataNew, aes(x = Ship_days, fill = factor(order_priority))) +
   geom_histogram(alpha = 0.5, position = "identity", bins = 5)   + ggtitle("Histogram of Shipping days by Priority") + labs(x = "Count", y = "Count")
 
 ```
+
 As we can see through the histogram only critical and high priority orders take less shipping days than low and medium priority orders. This makes sense as more important orders should be shipped faster than others. There are some low priority orders with 0 days shipping but that is because there is same day shipping for all orders. 
 
 
 ### Sales by Category
 
 There are three categories of items that can be bought, office supplies, technology, and furniture. We want to analyze the amount of profits per each category and segment to see where the company makes the most money.
+
 ```{r}
 
 totalSales = dataNew %>% group_by(category,segment) %>% summarise(total_profit = sum(profit))
@@ -105,6 +108,7 @@ ggplot(totalSales, aes(x = category, y = total_profit, fill = segment)) +
   labs(title = "Total Profit by Segment and Category",x = "Category",y = "Total Profit",
        fill = "Segment")
 ```
+
 It can be seen that orders from this company are mainly from consumers as they are purchasing the most furniture, office supplies, and technology. While Home offices are spent the least on every category as well. Most of these orders are spent on technology with a maximum profit of 96,189.28 dollars. As well the least spent was home office furniture at 16,599.82 dollars. 
 
 
@@ -124,3 +128,13 @@ avg_sales_by_region
 avg_sales_by_region %>% ggplot(aes(x = region, y = Avg_Sales, color = region)) + geom_point() +labs(x = "Region", y = "Sales") + ggtitle("Region vs. Sales Scatterplot")
 ```
 Looking at the scatter plot Africa and EMEA are lacking in sales compared to the rest of the group. North America has the most sales in orders and then it is Central Asia. No other region has an average sales of over 200. This makes sense as these are the two most populated regions around the world,  the other regions are large but have a much less population causing less orders.
+
+### Item Category by Region and Year
+
+```{r}
+library(ggmosaic)
+
+dataNew %>% ggplot() + geom_mosaic(aes(x = product(category), fill = region, weight = 1)) + facet_grid(~year) + ggtitle("Mosaic of Item Category by Region and Year") + labs(x = "Category", y = "Region")
+```
+
+We weren't sure about what categories of items would sell the most in the various regions. We also didn't know if any of the years would have different popularity of categories sold. The above mosaic plot shows the different regions and their sales of categories from 2011-2014. The plot indicates that the category of sales were pretty much the same by category but slightly different by region. But, between different years there was not much change in what portion of each region sold certain categories. In every category, the Central region had the most portion of sales, followed by the South. If the company would like to expand their marketing, then they should focus advertising in the regions with sales per category such as Oceania, Canada, and the Caribbean where their sales in every category are low. If the company would like to focus on increasing sales per category of regions that are a big portion of their sales, then they should focus advertising in the regions with higher portions of sales such as Central, and South.
